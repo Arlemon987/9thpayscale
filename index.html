@@ -258,31 +258,66 @@
             </div>
           </div>
 
-          <!-- GPF Slider -->
-          <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200">
-            <div class="flex items-center justify-between mb-1">
-              <label for="gpfPercent" class="font-bold text-emerald-900 flex items-center gap-1.5">
+          <!-- Two-tier GPF Deductions: Separate for June 2026 vs New Scale -->
+          <div class="bg-emerald-50/70 p-3.5 rounded-xl border border-emerald-200 space-y-3">
+            <div class="flex items-center justify-between border-b border-emerald-200 pb-2">
+              <span class="font-bold text-emerald-950 text-xs flex items-center gap-1.5">
                 <i class="fa-solid fa-piggy-bank text-emerald-700"></i>
-                জিপিএফ (GPF) কর্তন হার: <span id="gpfPercentDisplay" class="text-emerald-700 font-extrabold text-sm ml-1">১০%</span>
-              </label>
-              <span id="gpfAmountDisplay" class="font-bold text-emerald-800 bg-white px-2 py-0.5 rounded border border-emerald-300">
-                ৳ ১,৭৬৪
+                জিপিএফ (GPF) কর্তন ব্যবস্থা (২টি স্তরে হিসাব)
               </span>
+              <label class="flex items-center gap-1.5 text-[11px] text-emerald-800 font-semibold cursor-pointer">
+                <input type="checkbox" id="syncGpfCheckbox" checked onchange="toggleGpfSync(this.checked)" class="rounded text-emerald-600 focus:ring-emerald-500">
+                <span>উভয় ক্ষেত্রে একই হার</span>
+              </label>
             </div>
-            <input 
-              type="range" 
-              id="gpfPercent" 
-              min="0" 
-              max="25" 
-              value="10" 
-              step="1" 
-              class="w-full h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-              oninput="handleGpfChange(this.value)"
-            >
-            <div class="flex justify-between text-[10px] text-slate-500 mt-1">
-              <span>০% (ন্যূনতম)</span>
-              <span>১০% (সাধারণ)</span>
-              <span>২৫% (সর্বোচ্চ বৈধ সীমা)</span>
+
+            <!-- Tier 1: June 2026 Existing Basic GPF -->
+            <div class="bg-white p-2.5 rounded-lg border border-emerald-100 shadow-sm">
+              <div class="flex items-center justify-between mb-1">
+                <label for="juneGpfPercent" class="font-semibold text-slate-700 text-[11px]">
+                  ১. বর্তমান (৩০ জুন '২৬) বেসিকে GPF: <span id="juneGpfPercentDisplay" class="text-emerald-700 font-extrabold text-xs ml-1">১০%</span>
+                </label>
+                <span id="juneGpfAmountDisplay" class="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded text-[11px] border border-slate-200">
+                  ৳ ১,৭৬৪
+                </span>
+              </div>
+              <input 
+                type="range" 
+                id="juneGpfPercent" 
+                min="0" 
+                max="25" 
+                value="10" 
+                step="1" 
+                class="w-full h-1.5 bg-emerald-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                oninput="handleJuneGpfChange(this.value)"
+              >
+            </div>
+
+            <!-- Tier 2: New Scale Basic GPF -->
+            <div class="bg-white p-2.5 rounded-lg border border-emerald-100 shadow-sm">
+              <div class="flex items-center justify-between mb-1">
+                <label for="newGpfPercent" class="font-semibold text-slate-700 text-[11px]">
+                  ২. নতুন পে স্কেলের বেসিকে GPF: <span id="newGpfPercentDisplay" class="text-emerald-700 font-extrabold text-xs ml-1">১০%</span>
+                </label>
+                <span id="newGpfAmountDisplay" class="font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded text-[11px] border border-emerald-300">
+                  ৳ ২,৭৩৭
+                </span>
+              </div>
+              <input 
+                type="range" 
+                id="newGpfPercent" 
+                min="0" 
+                max="25" 
+                value="10" 
+                step="1" 
+                class="w-full h-1.5 bg-emerald-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                oninput="handleNewGpfChange(this.value)"
+              >
+              <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                <span>০% (ন্যূনতম)</span>
+                <span>১০% (সাধারণ)</span>
+                <span>২৫% (সর্বোচ্চ বৈধ সীমা)</span>
+              </div>
             </div>
           </div>
 
@@ -339,12 +374,39 @@
         <div class="flex items-center gap-4 bg-slate-800/80 p-3 rounded-xl border border-slate-700 w-full lg:w-auto justify-between lg:justify-end">
           <div>
             <span class="text-[11px] text-slate-400 block">বর্তমান সর্বমোট গ্রস বেতন:</span>
-            <span class="text-lg font-bold text-slate-200" id="baseGrossDisplay">৳ ২৯,৪১২</span>
+            <span class="text-lg font-bold text-slate-200" id="baseGrossDisplay">৳ ২৬,৬৯৬</span>
           </div>
           <div class="border-l border-slate-700 pl-4">
             <span class="text-[11px] text-emerald-400 font-semibold block">বর্তমান হাতে পাওয়া নিট বেতন:</span>
-            <span class="text-2xl font-extrabold text-emerald-400" id="baseNetDisplay">৳ ২৭,৪২১</span>
+            <span class="text-2xl font-extrabold text-emerald-400" id="baseNetDisplay">৳ ২৪,৭০৬</span>
+            <span class="text-[10px] text-slate-400 block" id="baseGpfSummaryText">(GPF: -৳ ১,৭৬৪)</span>
+            <div class="mt-2 p-2 bg-rose-950/90 border border-rose-500/60 rounded-md">
+              <span class="text-[11px] text-rose-300 font-bold block flex items-center gap-1">
+                <i class="fa-solid fa-circle-exclamation text-rose-400"></i>
+                মহার্ঘ ভাতাসহ বর্তমানে পাচ্ছেন: <span id="baseWithDearnessDisplay" class="text-rose-200 font-black text-xs">৳ ২৭,৩৫২</span>
+              </span>
+              <span class="text-[10px] text-rose-400 block mt-0.5" id="baseDearnessDetailText">
+                (১৫% হারে বিশেষ সুবিধা ৳ ২,৬৪৬ সহ [ন্যূনতম ১,৫০০ টাকা]। ২০২৬ স্কেলে এটি বিলুপ্ত বিধায় তুলনামূলক হিসেবে বহির্ভূত)
+              </span>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Red Colored Clarification Box regarding Dearness Allowance / Special Benefit -->
+      <div class="mt-4 pt-3 border-t border-slate-700/80 flex items-start gap-2.5 text-xs text-rose-200 bg-rose-950/70 p-3.5 rounded-xl border-2 border-rose-500/50 shadow-inner">
+        <div class="w-7 h-7 rounded-full bg-rose-500/20 border border-rose-400/40 flex items-center justify-center flex-shrink-0 mt-0.5">
+          <i class="fa-solid fa-triangle-exclamation text-rose-400 text-sm"></i>
+        </div>
+        <div class="leading-relaxed">
+          <div class="text-rose-300 font-bold text-sm mb-1 flex items-center gap-1.5">
+            <span>মহার্ঘ ভাতা / বিশেষ সুবিধা কেন হিসাবে আনা হয়নি? (গেজেটের স্পষ্ট কারণ)</span>
+          </div>
+          <p class="text-[11px] sm:text-xs text-rose-100/90">
+            বাংলাদেশ গেজেটের <strong>অনুচ্ছেদ ৩(ট)</strong>-এর সুনির্দিষ্ট বিধান অনুযায়ী—<strong>১ জুলাই ২০২৬ তারিখ হতে জাতীয় বেতনস্কেল ২০২৬ কার্যকর হওয়ার সাথে সাথেই পূর্বের ১০%/১৫% "বিশেষ সুবিধা (মহার্ঘ ভাতা)" সম্পূর্ণরূপে বিলুপ্ত</strong> ঘোষণা করা হয়েছে। 
+            কর্মকর্তা-কর্মচারীদের স্থায়ী মূল বেতন ও নিয়মিত ভাতাদির সাথে নতুন স্কেলের প্রতিটি ধাপে প্রকৃত কত টাকা প্রবৃদ্ধি ও নিট ব্যাংক প্রাপ্তি হবে তা শতভাগ স্বচ্ছ ও বিভ্রান্তিমুক্ত রাখার স্বার্থে 
+            এখানে ৩০ জুন ২০২৬-এর ভিত্তি ও পরবর্তী ধাপের কোনো হিসাবেই বিলুপ্ত মহার্ঘ ভাতা যোগ বা কর্তন করা হয়নি।
+          </p>
         </div>
       </div>
     </div>
@@ -390,15 +452,15 @@
             </div>
             <div class="flex justify-between text-slate-600">
               <span>সর্বমোট গ্রস বেতন:</span>
-              <span class="font-bold text-slate-800" id="p1GrossText">৳ ৩৬,৫৮৬</span>
+              <span class="font-bold text-slate-800" id="p1GrossText">৳ ৩৬,৪২৬</span>
             </div>
             <div class="flex justify-between text-slate-800 font-bold bg-emerald-100/60 p-2 rounded-lg mt-1">
               <span>হাতে প্রদেয় নিট বেতন:</span>
-              <span class="text-emerald-900 text-sm" id="p1NetTakeHomeText">৳ ৩৩,৫২৫</span>
+              <span class="text-emerald-900 text-sm" id="p1NetTakeHomeText">৳ ৩৩,৩৬৫</span>
             </div>
             <div class="flex justify-between items-center text-[11px] font-bold text-emerald-800 pt-0.5">
               <span>বর্তমানের চেয়ে প্রকৃত বৃদ্ধি:</span>
-              <span id="p1GainBadge" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ৬,১০৪</span>
+              <span id="p1GainBadge" class="bg-emerald-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ৮,৬৫৯</span>
             </div>
           </div>
         </div>
@@ -427,15 +489,15 @@
             </div>
             <div class="flex justify-between text-slate-600">
               <span>সর্বমোট গ্রস বেতন:</span>
-              <span class="font-bold text-slate-800" id="p2GrossText">৳ ৪১,৪৫১</span>
+              <span class="font-bold text-slate-800" id="p2GrossText">৳ ৪১,২৯১</span>
             </div>
             <div class="flex justify-between text-slate-800 font-bold bg-blue-100/60 p-2 rounded-lg mt-1">
               <span>হাতে প্রদেয় নিট বেতন:</span>
-              <span class="text-blue-900 text-sm" id="p2NetTakeHomeText">৳ ৩৭,৮৫৫</span>
+              <span class="text-blue-900 text-sm" id="p2NetTakeHomeText">৳ ৩৭,৬৯৫</span>
             </div>
             <div class="flex justify-between items-center text-[11px] font-bold text-blue-800 pt-0.5">
               <span>বর্তমানের চেয়ে প্রকৃত বৃদ্ধি:</span>
-              <span id="p2GainBadge" class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ১০,৪৩৪</span>
+              <span id="p2GainBadge" class="bg-blue-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ১২,৯৮৯</span>
             </div>
           </div>
         </div>
@@ -464,15 +526,15 @@
             </div>
             <div class="flex justify-between text-slate-600">
               <span>সর্বমোট গ্রস বেতন:</span>
-              <span class="font-bold text-slate-800" id="p3GrossText">৳ ৪৮,১১৬</span>
+              <span class="font-bold text-slate-800" id="p3GrossText">৳ ৪৭,৯৫৬</span>
             </div>
             <div class="flex justify-between text-slate-800 font-bold bg-purple-100/60 p-2 rounded-lg mt-1">
               <span>হাতে প্রদেয় নিট বেতন:</span>
-              <span class="text-purple-900 text-sm" id="p3NetTakeHomeText">৳ ৪৩,৭৮৭</span>
+              <span class="text-purple-900 text-sm" id="p3NetTakeHomeText">৳ ৪৩,৬২৭</span>
             </div>
             <div class="flex justify-between items-center text-[11px] font-bold text-purple-800 pt-0.5">
               <span>বর্তমানের চেয়ে প্রকৃত বৃদ্ধি:</span>
-              <span id="p3GainBadge" class="bg-purple-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ১৬,৩৬৬</span>
+              <span id="p3GainBadge" class="bg-purple-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ১৮,৯২১</span>
             </div>
           </div>
         </div>
@@ -490,7 +552,7 @@
           <div>
             <h3 class="text-xs font-bold text-slate-600">১ জানুয়ারি ২০২৮ হতে</h3>
             <div class="mt-2.5">
-              <span class="text-2xl sm:text-3xl font-extrabold text-amber-700 tracking-tight" id="p4NetTakeHomeText">৳ ৫১,৮৪৬</span>
+              <span class="text-2xl sm:text-3xl font-extrabold text-amber-700 tracking-tight" id="p4NetTakeHomeText">৳ ৫১,৮৩৬</span>
               <span class="text-[11px] text-slate-500 block mt-0.5">নতুন ভাতাসহ প্রদেয় নিট বেতন</span>
             </div>
           </div>
@@ -505,11 +567,11 @@
             </div>
             <div class="flex justify-between text-slate-800 font-bold bg-amber-100/60 p-2 rounded-lg mt-1">
               <span>সর্বমোট গ্রস বেতন:</span>
-              <span class="text-amber-900 text-sm" id="p4GrossText">৳ ৫৬,১৭৫</span>
+              <span class="text-amber-900 text-sm" id="p4GrossText">৳ ৫৬,১৬৫</span>
             </div>
             <div class="flex justify-between items-center text-[11px] font-bold text-amber-900 pt-0.5">
               <span>বর্তমানের চেয়ে প্রকৃত বৃদ্ধি:</span>
-              <span id="p4GainBadge" class="bg-amber-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ২৪,৪২৫</span>
+              <span id="p4GainBadge" class="bg-amber-600 text-white px-2 py-0.5 rounded text-xs">+ ৳ ২৭,১৩০</span>
             </div>
           </div>
         </div>
@@ -594,7 +656,7 @@
               </div>
               <div class="flex justify-between items-center pt-2 text-sm font-bold text-emerald-800 bg-emerald-50/60 p-2 rounded-lg">
                 <span>সর্বমোট অর্জিত বেতন (Gross Salary):</span>
-                <span id="slipTotalGross">৳ ৩৬,৫৮৬</span>
+                <span id="slipTotalGross">৳ ৩৬,৪২৬</span>
               </div>
             </div>
           </div>
@@ -646,7 +708,7 @@
           <div class="text-center sm:text-left">
             <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider block">নির্বাচিত ধাপে ব্যাংকে প্রদেয় নিট বেতন (Net Take-home Pay)</span>
             <div class="text-2xl sm:text-4xl font-extrabold text-emerald-800 tracking-tight mt-0.5" id="finalNetPayable">
-              ৳ ৩৩,৫২৫
+              ৳ ৩৩,৩৬৫
             </div>
             <p class="text-[11px] text-slate-500 mt-1" id="netPayableExplanation">
               (মোট গ্রস বেতন − জিপিএফ, কল্যাণ তহবিল ও অন্যান্য কর্তন = প্রকৃত ব্যাংকে প্রদেয় অর্থ)
@@ -655,7 +717,7 @@
           <div class="flex items-center gap-3">
             <div class="text-right">
               <span class="text-[11px] text-slate-500 block">বর্তমান বেতনের চেয়ে নিট লাভ:</span>
-              <span class="text-lg font-bold text-emerald-700" id="slipNetGainText">+ ৳ ৬,১০৪</span>
+              <span class="text-lg font-bold text-emerald-700" id="slipNetGainText">+ ৳ ৮,৬৫৯</span>
             </div>
             <button onclick="window.print()" class="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs flex items-center gap-2 shadow-sm transition">
               <i class="fa-solid fa-file-invoice-dollar"></i> পে-স্লিপ প্রিন্ট
@@ -1181,8 +1243,33 @@
       return { amount, ratePercent: percent };
     }
 
-    function handleGpfChange(val) {
-      document.getElementById('gpfPercentDisplay').textContent = `${toBn(val)}%`;
+    // GPF two-tier handlers
+    let isGpfSynced = true;
+
+    function toggleGpfSync(checked) {
+      isGpfSynced = checked;
+      if (isGpfSynced) {
+        const val = document.getElementById('juneGpfPercent').value;
+        document.getElementById('newGpfPercent').value = val;
+      }
+      updateUI();
+    }
+
+    function handleJuneGpfChange(val) {
+      document.getElementById('juneGpfPercentDisplay').textContent = `${toBn(val)}%`;
+      if (isGpfSynced) {
+        document.getElementById('newGpfPercent').value = val;
+        document.getElementById('newGpfPercentDisplay').textContent = `${toBn(val)}%`;
+      }
+      updateUI();
+    }
+
+    function handleNewGpfChange(val) {
+      document.getElementById('newGpfPercentDisplay').textContent = `${toBn(val)}%`;
+      if (isGpfSynced) {
+        document.getElementById('juneGpfPercent').value = val;
+        document.getElementById('juneGpfPercentDisplay').textContent = `${toBn(val)}%`;
+      }
       updateUI();
     }
 
@@ -1232,20 +1319,26 @@
       const isQuarter = (document.getElementById('govtQuarterSelect').value === 'yes');
       const ageChoice = document.getElementById('ageSelect').value;
       const children = parseInt(document.getElementById('childrenCount').value, 10);
-      const gpfPercent = parseFloat(document.getElementById('gpfPercent').value) || 0;
+      
+      // Separate GPF rates: June 2026 vs New Scale
+      const juneGpfPercent = parseFloat(document.getElementById('juneGpfPercent').value) || 0;
+      const newGpfPercent = parseFloat(document.getElementById('newGpfPercent').value) || 0;
+      
+      document.getElementById('juneGpfPercentDisplay').textContent = `${toBn(juneGpfPercent)}%`;
+      document.getElementById('newGpfPercentDisplay').textContent = `${toBn(newGpfPercent)}%`;
+
       const benevolentPercent = parseFloat(document.getElementById('benevolentPercentInput').value) || 0;
       const insurance = parseFloat(document.getElementById('groupInsurance').value) || 0;
       const tax = parseFloat(document.getElementById('taxDeduction').value) || 0;
 
       // Allowances: Under Article 1(3)(ঞ) and Article 12(1), existing allowances drawn up to 30 June 2026 continue till 31 Dec 2027.
-      // The new Mobile Allowance (Article 22) and new Conveyance (Article 21) apply strictly from 1 Jan 2028 (Phase 4).
       let conveyanceMobileOld = 0;
-      if (gradeObj.grade >= 11 && location !== 'others') conveyanceMobileOld = 300; // 2015 scale conveyance (City Corp)
+      if (gradeObj.grade >= 11 && location !== 'others') conveyanceMobileOld = 300;
 
       let conveyanceMobileNew = 0;
-      if (gradeObj.grade <= 5) conveyanceMobileNew += 500; // Article 22: Grade 1-5 mobile 500 BDT
-      else conveyanceMobileNew += 150; // Article 22: Grade 6-20 mobile 150 BDT
-      if (gradeObj.grade >= 11 && location !== 'others') conveyanceMobileNew += 600; // Article 21: Grade 11-20 conveyance 600 BDT
+      if (gradeObj.grade <= 5) conveyanceMobileNew += 500;
+      else conveyanceMobileNew += 150;
+      if (gradeObj.grade >= 11 && location !== 'others') conveyanceMobileNew += 600;
 
       const education = (children === 1) ? 500 : (children >= 2 ? 1000 : 0);
 
@@ -1254,52 +1347,67 @@
       // House Rent for 2028 new scale (applies to Phase 4)
       const hr2028 = compute2028NewHouseRent(res.phase3Payable, gradeObj.grade, location, isQuarter);
 
-      // Medical Allowance:
-      // Baseline and Phases 1, 2, 3: Existing 1,500 BDT
+      // Medical Allowance
       const medOld = (june2026Basic > 0) ? 1500 : 0;
-      // Phase 4: 2028 Gazette: <=50 -> 3000, >50 -> 4000
       const medNew = (ageChoice === 'over50') ? 4000 : 3000;
 
       // ==========================================
       // BASELINE: ৩০ জুন ২০২৬ পর্যন্ত বিদ্যমান বেতন (২০১৫ স্কেল)
+      // GPF STRICTLY CALCULATED ON JUNE 2026 BASIC SALARY
       // ==========================================
       const baseBasic = june2026Basic;
       const baseHouseRent = hr2015.amount;
       const baseMedical = medOld;
       const baseGross = baseBasic + baseHouseRent + baseMedical + education + conveyanceMobileOld;
-      const baseGpf = Math.round(baseBasic * (gpfPercent / 100));
+      const baseGpf = Math.round(baseBasic * (juneGpfPercent / 100)); // Strictly on June 2026 basic
       const baseBenevolent = Math.round(baseBasic * (benevolentPercent / 100));
       const baseQuarter = isQuarter ? Math.round(baseBasic * 0.05) : 0;
       const baseTotalDeductions = baseGpf + baseBenevolent + insurance + tax + baseQuarter;
       const baseNet = Math.max(0, baseGross - baseTotalDeductions);
 
+      // Dearness / Special Benefit calculation (1-9 grade: 10%, 10-20 grade: 15%, minimum 1500)
+      const dearnessPercent = (gradeObj.grade <= 9) ? 10 : 15;
+      const dearnessAmount = (baseBasic > 0) ? Math.max(1500, Math.round(baseBasic * (dearnessPercent / 100))) : 0;
+      const baseNetWithDearness = baseNet + dearnessAmount;
+
       document.getElementById('baseBasicLabel').textContent = `৳ ${formatBnMoney(baseBasic)}`;
       document.getElementById('baseHouseRentLabel').textContent = `৳ ${formatBnMoney(baseHouseRent)}`;
       document.getElementById('baseGrossDisplay').textContent = `৳ ${formatBnMoney(baseGross)}`;
       document.getElementById('baseNetDisplay').textContent = `৳ ${formatBnMoney(baseNet)}`;
+      document.getElementById('baseGpfSummaryText').textContent = `(GPF কর্তন: -৳ ${formatBnMoney(baseGpf)})`;
+      document.getElementById('juneGpfAmountDisplay').textContent = `৳ ${formatBnMoney(baseGpf)}`;
+
+      // Update Dearness Notice text under June 2026 net salary
+      document.getElementById('baseWithDearnessDisplay').textContent = `৳ ${formatBnMoney(baseNetWithDearness)}`;
+      document.getElementById('baseDearnessDetailText').textContent = 
+        `(${toBn(dearnessPercent)}% হারে বিশেষ সুবিধা ৳ ${formatBnMoney(dearnessAmount)} সহ [ন্যূনতম ১,৫০০ টাকা]। ২০২৬ স্কেলে এটি বিলুপ্ত বিধায় নতুন তুলনামূলক হিসেবে বহির্ভূত)`;
 
       // ==========================================
       // PHASE 1 (১ জুলাই ২০২৬ – ৩১ ডিসে ২০২৬)
+      // GPF CALCULATED ON PHASE 1 PAYABLE BASIC
       // ==========================================
       const p1Basic = res.phase1Payable;
-      const p1HouseRent = hr2015.amount; // বিদ্যমান ২০১৫ হার বহাল
-      const p1Medical = medOld;          // বিদ্যমান ১৫০০ টাকা বহাল
+      const p1HouseRent = hr2015.amount;
+      const p1Medical = medOld;
       const p1Gross = p1Basic + p1HouseRent + p1Medical + education + conveyanceMobileOld;
-      const p1Gpf = Math.round(p1Basic * (gpfPercent / 100));
+      const p1Gpf = Math.round(p1Basic * (newGpfPercent / 100)); // On Phase 1 new basic
       const p1Benevolent = Math.round(p1Basic * (benevolentPercent / 100));
       const p1Quarter = isQuarter ? Math.round(p1Basic * 0.05) : 0;
       const p1TotalDeductions = p1Gpf + p1Benevolent + insurance + tax + p1Quarter;
       const p1Net = Math.max(0, p1Gross - p1TotalDeductions);
       const p1Gain = p1Net - baseNet;
 
+      // Display in setting card for new scale
+      document.getElementById('newGpfAmountDisplay').textContent = `৳ ${formatBnMoney(p1Gpf)}`;
+
       // ==========================================
       // PHASE 2 (১ জানু ২০২৭ – ৩০ জুন ২০২৭)
       // ==========================================
       const p2Basic = res.phase2Payable;
-      const p2HouseRent = hr2015.amount; // বিদ্যমান ২০১৫ হার বহাল
-      const p2Medical = medOld;          // বিদ্যমান ১৫০০ টাকা বহাল
+      const p2HouseRent = hr2015.amount;
+      const p2Medical = medOld;
       const p2Gross = p2Basic + p2HouseRent + p2Medical + education + conveyanceMobileOld;
-      const p2Gpf = Math.round(p2Basic * (gpfPercent / 100));
+      const p2Gpf = Math.round(p2Basic * (newGpfPercent / 100));
       const p2Benevolent = Math.round(p2Basic * (benevolentPercent / 100));
       const p2Quarter = isQuarter ? Math.round(p2Basic * 0.05) : 0;
       const p2TotalDeductions = p2Gpf + p2Benevolent + insurance + tax + p2Quarter;
@@ -1309,11 +1417,11 @@
       // ==========================================
       // PHASE 3 (১ জুলাই ২০২৭ – ৩১ ডিসে ২০২৭)
       // ==========================================
-      const p3Basic = res.phase3Payable; // ১০০% পূর্ণ বেসিক + ২০২৭ ইনক্রিমেন্ট
-      const p3HouseRent = hr2015.amount; // ৩১ ডিসে ২০২৭ পর্যন্ত বিদ্যমান ২০১৫ হার বহাল
-      const p3Medical = medOld;          // ৩১ ডিসে ২০২৭ পর্যন্ত বিদ্যমান ১৫০০ টাকা বহাল
+      const p3Basic = res.phase3Payable;
+      const p3HouseRent = hr2015.amount;
+      const p3Medical = medOld;
       const p3Gross = p3Basic + p3HouseRent + p3Medical + education + conveyanceMobileOld;
-      const p3Gpf = Math.round(p3Basic * (gpfPercent / 100));
+      const p3Gpf = Math.round(p3Basic * (newGpfPercent / 100));
       const p3Benevolent = Math.round(p3Basic * (benevolentPercent / 100));
       const p3Quarter = isQuarter ? Math.round(p3Basic * 0.05) : 0;
       const p3TotalDeductions = p3Gpf + p3Benevolent + insurance + tax + p3Quarter;
@@ -1324,10 +1432,10 @@
       // PHASE 4 (১ জানুয়ারি ২০২৮ হতে চলমান)
       // ==========================================
       const p4Basic = res.phase3Payable;
-      const p4HouseRent = hr2028.amount; // ২০২৮ নতুন গেজেট হার!
-      const p4Medical = medNew;          // ২০২৮ নতুন গেজেট হার (৩,০০০ বা ৪,০০০)!
+      const p4HouseRent = hr2028.amount;
+      const p4Medical = medNew;
       const p4Gross = p4Basic + p4HouseRent + p4Medical + education + conveyanceMobileNew;
-      const p4Gpf = Math.round(p4Basic * (gpfPercent / 100));
+      const p4Gpf = Math.round(p4Basic * (newGpfPercent / 100));
       const p4Benevolent = Math.round(p4Basic * (benevolentPercent / 100));
       const p4Quarter = isQuarter ? Math.round(p4Basic * 0.05) : 0;
       const p4TotalDeductions = p4Gpf + p4Benevolent + insurance + tax + p4Quarter;
@@ -1377,11 +1485,13 @@
         }
       }
 
+      // Determine active values for Pay Slip
       let curBasic = p1Basic;
       let curHouseRent = p1HouseRent;
       let curMedical = p1Medical;
       let curGross = p1Gross;
       let curGpf = p1Gpf;
+      let curGpfPercent = newGpfPercent;
       let curBenevolent = p1Benevolent;
       let curQuarter = p1Quarter;
       let curTotalDeductions = p1TotalDeductions;
@@ -1396,7 +1506,8 @@
         curHouseRent = baseHouseRent;
         curMedical = baseMedical;
         curGross = baseGross;
-        curGpf = baseGpf;
+        curGpf = baseGpf; // Exactly base GPF
+        curGpfPercent = juneGpfPercent;
         curBenevolent = baseBenevolent;
         curQuarter = baseQuarter;
         curTotalDeductions = baseTotalDeductions;
@@ -1404,13 +1515,14 @@
         curGain = 0;
         curConveyanceMobile = conveyanceMobileOld;
         phaseTitle = "বর্তমান অবস্থা (৩০ জুন ২০২৬ পর্যন্ত ২০১৫ জাতীয় বেতনস্কেল)";
-        ruleBannerText = "এটি আপনার বর্তমান বিদ্যমান বেতন বিবরণী—যেখানে মূল বেতন, ২০১৫ সালের বাড়িভাড়া এবং ১,৫০০ টাকা চিকিৎসা ভাতা হিসাবভুক্ত রয়েছে।";
+        ruleBannerText = "এটি আপনার বর্তমান বিদ্যমান বেতন বিবরণী—যেখানে ৩০ জুন ২০২৬-এর মূল বেতনের ওপর নির্ধারিত GPF কর্তন ও বিদ্যমান ভাতাদি হিসাবভুক্ত রয়েছে।";
       } else if (selectedActivePhase === 2) {
         curBasic = p2Basic;
         curHouseRent = p2HouseRent;
         curMedical = p2Medical;
         curGross = p2Gross;
         curGpf = p2Gpf;
+        curGpfPercent = newGpfPercent;
         curBenevolent = p2Benevolent;
         curQuarter = p2Quarter;
         curTotalDeductions = p2TotalDeductions;
@@ -1425,6 +1537,7 @@
         curMedical = p3Medical;
         curGross = p3Gross;
         curGpf = p3Gpf;
+        curGpfPercent = newGpfPercent;
         curBenevolent = p3Benevolent;
         curQuarter = p3Quarter;
         curTotalDeductions = p3TotalDeductions;
@@ -1439,6 +1552,7 @@
         curMedical = p4Medical;
         curGross = p4Gross;
         curGpf = p4Gpf;
+        curGpfPercent = newGpfPercent;
         curBenevolent = p4Benevolent;
         curQuarter = p4Quarter;
         curTotalDeductions = p4TotalDeductions;
@@ -1485,11 +1599,13 @@
 
       document.getElementById('slipTotalGross').textContent = `৳ ${formatBnMoney(curGross)}`;
 
-      // GPF and Deductions
-      document.getElementById('gpfAmountDisplay').textContent = `৳ ${formatBnMoney(curGpf)}`;
-      document.getElementById('gpfPercentDisplay').textContent = `${toBn(gpfPercent)}%`;
+      // GPF in Pay Slip
       document.getElementById('slipGpf').textContent = `৳ ${formatBnMoney(curGpf)}`;
-      document.getElementById('slipGpfPercentNote').textContent = `চলতি বেসিকের ${toBn(gpfPercent)}% কর্তন`;
+      if (selectedActivePhase === 0) {
+        document.getElementById('slipGpfPercentNote').textContent = `৩০ জুন '২৬ বেসিকের ${toBn(curGpfPercent)}% কর্তন`;
+      } else {
+        document.getElementById('slipGpfPercentNote').textContent = `চলতি ধাপের মূল বেসিকের ${toBn(curGpfPercent)}% কর্তন`;
+      }
 
       // Benevolent
       document.getElementById('benevolentAmountText').textContent = `৳ ${formatBnMoney(curBenevolent)}`;
@@ -1512,6 +1628,7 @@
       document.getElementById('finalNetPayable').textContent = `৳ ${formatBnMoney(curNet)}`;
       document.getElementById('slipNetGainText').textContent = (selectedActivePhase === 0) ? '০ টাকা (ভিত্তি)' : `+ ৳ ${formatBnMoney(curGain)}`;
 
+      // Comparison Table rendering with exact GPF for each phase
       const compBody = document.getElementById('comparisonTableBody');
       compBody.innerHTML = `
         <tr class="hover:bg-slate-50 transition">
@@ -1563,8 +1680,24 @@
           <td class="py-2.5 px-3 text-amber-900 bg-amber-100/50">৳ ${formatBnMoney(p4Gross)}</td>
         </tr>
         <tr class="hover:bg-slate-50 transition text-rose-700">
-          <td class="py-2.5 px-3 font-semibold">মোট সরকারি কর্তন (GPF, কল্যাণ ইত্যাদি)</td>
-          <td class="py-2.5 px-3 bg-slate-100">- ৳ ${formatBnMoney(baseTotalDeductions)}</td>
+          <td class="py-2.5 px-3 font-semibold">জিপিএফ (GPF) কর্তন</td>
+          <td class="py-2.5 px-3 bg-slate-100 font-bold">- ৳ ${formatBnMoney(baseGpf)} <span class="text-[10px] text-slate-400 block font-normal">(জুন '২৬ বেসিকের ${toBn(juneGpfPercent)}%)</span></td>
+          <td class="py-2.5 px-3 font-bold">- ৳ ${formatBnMoney(p1Gpf)} <span class="text-[10px] text-slate-400 block font-normal">(নতুন বেসিকের ${toBn(newGpfPercent)}%)</span></td>
+          <td class="py-2.5 px-3 font-bold">- ৳ ${formatBnMoney(p2Gpf)} <span class="text-[10px] text-slate-400 block font-normal">(নতুন বেসিকের ${toBn(newGpfPercent)}%)</span></td>
+          <td class="py-2.5 px-3 font-bold">- ৳ ${formatBnMoney(p3Gpf)} <span class="text-[10px] text-slate-400 block font-normal">(নতুন বেসিকের ${toBn(newGpfPercent)}%)</span></td>
+          <td class="py-2.5 px-3 bg-amber-50/40 font-bold">- ৳ ${formatBnMoney(p4Gpf)} <span class="text-[10px] text-amber-800 block font-normal">(নতুন বেসিকের ${toBn(newGpfPercent)}%)</span></td>
+        </tr>
+        <tr class="hover:bg-slate-50 transition text-rose-600">
+          <td class="py-2.5 px-3 font-semibold">অন্যান্য কর্তন (কল্যাণ+বীমা+ট্যাক্স)</td>
+          <td class="py-2.5 px-3 bg-slate-100">- ৳ ${formatBnMoney(baseTotalDeductions - baseGpf)}</td>
+          <td class="py-2.5 px-3">- ৳ ${formatBnMoney(p1TotalDeductions - p1Gpf)}</td>
+          <td class="py-2.5 px-3">- ৳ ${formatBnMoney(p2TotalDeductions - p2Gpf)}</td>
+          <td class="py-2.5 px-3">- ৳ ${formatBnMoney(p3TotalDeductions - p3Gpf)}</td>
+          <td class="py-2.5 px-3 bg-amber-50/40">- ৳ ${formatBnMoney(p4TotalDeductions - p4Gpf)}</td>
+        </tr>
+        <tr class="hover:bg-slate-50 transition text-rose-700 font-bold bg-rose-50/30">
+          <td class="py-2.5 px-3">সর্বমোট সরকারি কর্তন</td>
+          <td class="py-2.5 px-3 bg-slate-200/40">- ৳ ${formatBnMoney(baseTotalDeductions)}</td>
           <td class="py-2.5 px-3">- ৳ ${formatBnMoney(p1TotalDeductions)}</td>
           <td class="py-2.5 px-3">- ৳ ${formatBnMoney(p2TotalDeductions)}</td>
           <td class="py-2.5 px-3">- ৳ ${formatBnMoney(p3TotalDeductions)}</td>
